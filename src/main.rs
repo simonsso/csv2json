@@ -10,24 +10,32 @@ fn main() {
         headers.push(i.to_string());
     }
 
-    println!("json = [");
+    println!("[");
+    let mut newlineouterescape = " ";
     for x in  std::io::stdin().lock().lines() {
+        println!("{}{{",newlineouterescape);
+        newlineouterescape = ",\r\n ";
         match x{
                Err(_) => {} //last
                Ok(x) => {
                    let mut i =0;
                    let mut h = headers.iter();
+                   let mut newlineescape = "";
                    for item in x.split(';') {
                        let title = match h.next(){
                             Some(x) => {x.to_string()},
                             None => { format!("default{}",i)}
                        };
-                       println!("  \"{}\":{}",title,item);
+                       let esc = '"';
+                       print!("{}  \"{}\":{}{}{}",newlineescape,title,esc,item,esc);
                        i += 1;
+                       newlineescape = ",\r\n";
                    }
              }
         }
+        print!("\r\n }}");
+
     }
-    println!("]");
+    println!("\r\n]");
 
 }
