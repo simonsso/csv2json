@@ -1,26 +1,5 @@
 use std::io::BufRead;
 use regex::Regex;
-// check for negative positive numers
-// max one decimal comma
-fn isNum(s:&str) -> bool{
-    // let s=
-    // if s[0] == '-' {
-    //     s[1..]
-    // } else {
-    //     s[0..]
-    // }
-    let mut first = true;
-    let mut decimal = 0;
-    for c in s.chars() {
-        decimal += if (c == '.' ) || ( c == ',') {1} else {0};
-        if ! ( (first && c =='-') || c.is_digit(10) || (decimal <=1 )){
-            return false
-        }
-        first = false;
-    }
-    true
-}
-
 
 /// Simple conversion tool to generate a json array with all lines from a CSV (fields separeated by ; )
 /// Headers in first Line
@@ -68,11 +47,6 @@ fn main() {
                             }
 
                        };
-                    //    let esc = if re_isnum.is_match(item){
-                    //        ""
-                    //     }else{
-                    //         "\""
-                    //     };
                        print!("{}  \"{}\" : {}",newlineescape,title,escapeditem);
                        i += 1;
                        newlineescape = ",\r\n";
