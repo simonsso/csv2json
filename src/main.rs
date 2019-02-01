@@ -6,9 +6,18 @@ use regex::Regex;
 /// All other lines as an array
 fn main() {
     let re_isnum = Regex::new(r"^(-?\d+)[\.,]?(\d*)$").unwrap(); 
+
     let heading = std::io::stdin().lock().lines().next().unwrap().unwrap() ;
     let mut headers:Vec<String> = Vec::new();
-    for i in heading.split(';'){
+
+    let mut chars = heading.chars().peekable();
+    // Print all unicode control characters in begining of file unchanged
+    while !chars.peek().unwrap().is_ascii() {
+        print!("{}",chars.next().unwrap());
+    }
+
+    let s:String = chars.collect();
+    for i in s.split(';'){
         headers.push(i.to_string());
     }
 
@@ -16,7 +25,7 @@ fn main() {
     let mut newlineouterescape = " ";
     for x in  std::io::stdin().lock().lines() {
         println!("{}{{",newlineouterescape);
-        newlineouterescape = ",\r\n ";
+        newlineouterescape = ",\n ";
         match x{
                Err(_) => {} //last
                Ok(x) => {
@@ -49,14 +58,14 @@ fn main() {
                        };
                        print!("{}  \"{}\" : {}",newlineescape,title,escapeditem);
                        i += 1;
-                       newlineescape = ",\r\n";
+                       newlineescape = ",\n";
                    }
              }
         }
-        print!("\r\n }}");
+        print!("\n }}");
 
     }
-    println!("\r\n]");
+    println!("\n]");
 
 }
 // unit tests 
